@@ -36,6 +36,26 @@ main::before{content:"";position:absolute;left:34px;top:0;bottom:40px;width:2px;
 .brand span{font-size:.85rem;color:var(--muted);line-height:1.3}
 .brand b{display:block;color:var(--text);font-size:.95rem}
 footer{max-width:760px;margin:0 auto;padding:0 20px 40px;font-family:system-ui,sans-serif;font-size:.8rem;color:var(--muted)}
+.tabs{max-width:760px;margin:0 auto;padding:6px 20px 0;display:flex;gap:8px;font-family:system-ui,sans-serif}
+.tabs button{flex:1;border:1.5px solid var(--line);background:transparent;color:var(--text);padding:10px;border-radius:10px;font-size:.95rem;font-weight:600;cursor:pointer}
+.tabs button.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+#exam{max-width:760px;margin:0 auto;padding:16px 20px 60px;font-family:system-ui,sans-serif}
+.ex-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.ex-prog{font-size:.8rem;color:var(--muted);margin-bottom:6px;display:flex;justify-content:space-between}
+.ex-bar{height:6px;background:var(--line);border-radius:3px;margin-bottom:14px;overflow:hidden}
+.ex-bar i{display:block;height:100%;background:var(--c3)}
+.ex-q{font-family:Georgia,serif;font-size:1.12rem;font-weight:700;margin:0 0 14px}
+.opt{display:block;width:100%;text-align:left;margin:0 0 8px;padding:11px 12px;border:1.5px solid var(--line);background:transparent;color:var(--text);border-radius:9px;font-size:.95rem;cursor:pointer}
+.opt:not(:disabled):hover{border-color:var(--text)}
+.opt.ok{border-color:#2e7d5b;background:rgba(46,125,91,.18)}
+.opt.bad{border-color:#b23a2a;background:rgba(178,58,42,.18)}
+.opt:disabled{cursor:default;color:var(--text);opacity:1}
+.ex-exp{margin:10px 0 0;font-size:.9rem;color:var(--muted)}
+.big{border:0;background:var(--text);color:var(--bg);padding:11px 18px;border-radius:9px;font-size:.95rem;font-weight:600;cursor:pointer;margin:8px 8px 0 0}
+.big.alt{background:transparent;color:var(--text);border:1.5px solid var(--line)}
+.score{font-family:Georgia,serif;font-size:2.6rem;font-weight:700;margin:4px 0}
+.miss{margin:8px 0 0;padding:10px 12px;border-left:4px solid #b23a2a;background:var(--bg);border-radius:6px;font-size:.88rem}
+.miss b{display:block}
 .hide{display:none}
 </style>
 </head>
@@ -45,8 +65,10 @@ footer{max-width:760px;margin:0 auto;padding:0 20px 40px;font-family:system-ui,s
 <h1>Línea del tiempo</h1>
 <p>Desde los primeros pobladores hasta el grito de Chuquisaca (1809). Toca un evento para ver el detalle.</p>
 </header>
+<nav class="tabs"><button id="tabT" class="on">Línea del tiempo</button><button id="tabE">Examen</button></nav>
 <div class="filters" id="filters"></div>
 <main id="tl"></main>
+<section id="exam" class="hide"></section>
 <footer>Material de estudio del profesor Neil Erazo · Piensa Diferente. Basado en <i>Historia de Bolivia</i> de Mesa y Gisbert.</footer>
 <script>
 var P={pre:["Prehispánico","var(--c1)"],con:["Conquista","var(--c2)"],civ:["Guerras civiles","var(--c6)"],col:["Colonia (s. XVI)","var(--c3)"],reb:["Rebeliones","var(--c5)"],ind:["Independencia","var(--c4)"]};
@@ -95,6 +117,61 @@ d.querySelector(".yr").textContent=e[1];d.querySelector(".tt").textContent=e[2];
 d.querySelector("button").onclick=function(){var o=d.classList.toggle("open");this.setAttribute("aria-expanded",o)};
 tl.appendChild(d)})}
 render();
+</script>
+<script>
+var Q=[
+["¿En qué fecha llegó Cristóbal Colón a la isla Guanahaní, marcando el descubrimiento de América?",["3 de agosto de 1492","12 de octubre de 1492","25 de septiembre de 1493","6 de septiembre de 1522","21 de mayo de 1506"],1,"Colón salió de Palos el 3 de agosto y llegó a Guanahaní el 12 de octubre de 1492."],
+["¿Quién completó la primera vuelta al mundo tras la muerte de Magallanes en Filipinas?",["Vasco de Gama","Bartolomé Díaz","Juan Sebastián El Cano","Cristóbal Colón","Alonso de Ojeda"],2,"Magallanes murió en Filipinas y El Cano completó el viaje en 1522."],
+["¿En qué ciudad fue apresado el inca Atahuallpa por Francisco Pizarro?",["Cuzco","Quito","Tumbez","Cajamarca","Jauja"],3,"Fue capturado en Cajamarca el 16 de noviembre de 1532."],
+["Tras cobrar el rescate de Atahuallpa, ¿de qué delitos lo acusó Pizarro para ejecutarlo?",["Rebelión y usurpación del trono","Idolatría, fratricidio y traición","Herejía y conspiración","Robo del tesoro real","Negarse a convertirse al catolicismo"],1,"Fue acusado de idolatría, fratricidio y traición, y ejecutado en 1533."],
+["¿Quién descubrió el yacimiento de plata del Cerro Rico de Potosí en enero de 1545?",["Alonso de Mendoza","Gonzalo Pizarro","Diego Huallpa","Pedro Anzúrez","Francisco de Carvajal"],2,"Diego Huallpa halló la plata del Cerro Rico (Sumaj Orcko)."],
+["¿Qué capitán fundó la ciudad de Nuestra Señora de La Paz en 1548 por orden del pacificador La Gasca?",["Diego de Almagro","Alonso de Mendoza","Diego Centeno","Francisco Carvajal","Blasco Núñez de Vela"],1,"Alonso de Mendoza fundó La Paz en 1548."],
+["¿En qué año se posesionó el virrey Francisco de Toledo en Lima, iniciando su extenso gobierno?",["1545","1555","1569","1574","1581"],2,"Toledo se posesionó en 1569 y gobernó hasta 1581."],
+["¿Qué institución prehispánica reorganizó Toledo para convertirla en el sistema de trabajo obligatorio en las minas?",["El yanaconazgo","La mita","La encomienda","El ayllu","El cabildo"],1,"Toledo reorganizó la mita incaica para llevar trabajadores a las minas."],
+["¿Cuántos mitayos al año debían reunir en conjunto las provincias sujetas a la mita para trabajar en las minas de Potosí?",["4.500","6.000","9.000","13.500","16.000"],3,"Las provincias sujetas enviaban 13.500 mitayos al año."],
+["¿Qué instrumento mandó elaborar Toledo para calcular el monto del tributo indígena según los ingresos de cada comunidad?",["El Padrón Real","La Tasa","El Catastro","La Mesta","El Repartimiento"],1,"La Tasa fijaba el tributo que pagaba cada comunidad."],
+["Según el texto, ¿por cuántas generaciones (vidas) se adjudicaba una encomienda a un conquistador y su familia?",["Una vida","Dos vidas","Tres vidas","Cuatro vidas","De forma perpetua, sin límite"],1,"La encomienda se adjudicaba por dos vidas."],
+["¿Quién capturó a Túpac Amaru I en Vilcabamba, permitiendo que Toledo ordenara su ejecución en 1572?",["Hernando Pizarro","Diego de Almagro","García de Loyola","Alonso de Mendoza","Pedro de Hinojosa"],2,"García de Loyola lo capturó; Toledo lo hizo ejecutar en Cuzco."],
+["¿Qué nombre recibió originalmente la ciudad fundada en el valle de Kjocha Pampa en 1571, hoy Cochabamba?",["Villa de San Bernardo","Nueva Toledo","Villa de Oropesa","Ciudad de los Reyes","San Lorenzo de la Frontera"],2,"Jerónimo de Osorio fundó la Villa de Oropesa en 1571."],
+["¿Quién fundó la Villa de San Bernardo de Tarija por encargo del virrey Toledo en 1574?",["Jerónimo de Osorio","Luis de Fuentes","Diego Centeno","Pedro Anzúrez","Garci Ruiz de Orellana"],1,"Luis de Fuentes fundó Tarija en 1574."],
+["¿Quién fundó la ciudad de Santa Cruz de la Sierra el 26 de febrero de 1561?",["Andrés Manso","Ñuflo de Chaves","Diego de Almagro","Juan de Garay","Luis de Fuentes"],1,"Ñuflo de Chaves fundó Santa Cruz de la Sierra en 1561."],
+["¿En qué año fue fundada la ciudad de Nuestra Señora de La Paz?",["1532","1538","1545","1548","1561"],3,"Se fundó en 1548: el 20 de octubre en Laja y el 23 en Chuquiabo."],
+["¿Quién fue el primer virrey del Perú, que llegó a Lima en 1544?",["Francisco Pizarro","Pedro de la Gasca","Blasco Núñez de Vela","Antonio de Mendoza","Francisco de Toledo"],2,"Blasco Núñez de Vela llegó en 1544 para aplicar las Nuevas Leyes."],
+["¿Quién fue Túpac Katari (Catari), líder del cerco a La Paz en 1781?",["Julián Apaza, indígena nacido en Ayo Ayo","José Gabriel Condorcanqui","Tomás Catari","Andrés Túpac Amaru","Bonifacio Chuquimamani"],0,"Julián Apaza tomó el nombre de Túpac Katari y cercó La Paz."],
+["¿En qué fecha ocurrió el levantamiento de Chuquisaca contra el presidente de la Audiencia, García León y Pizarro?",["25 de mayo de 1809","16 de julio de 1809","25 de mayo de 1810","6 de agosto de 1825","24 de septiembre de 1810"],0,"El levantamiento de Chuquisaca fue el 25 de mayo de 1809."],
+["¿Qué levantamiento de 1809 es considerado el primer grito libertario de Sudamérica?",["El de La Paz, el 16 de julio","El de Cochabamba, en septiembre","El de Buenos Aires, el 25 de mayo","El de Chuquisaca, el 25 de mayo","El de Quito, en agosto"],3,"Es la tradición boliviana: Chuquisaca (25 de mayo) precede a La Paz (16 de julio)."]
+];
+var ex=document.getElementById("exam"),tT=document.getElementById("tabT"),tE=document.getElementById("tabE"),L="abcde",st=null;
+function show(t){var e=t==="e";tT.className=e?"":"on";tE.className=e?"on":"";
+document.getElementById("filters").classList.toggle("hide",e);document.getElementById("tl").classList.toggle("hide",e);ex.classList.toggle("hide",!e);
+if(e&&!st)home();window.scrollTo(0,0)}
+tT.onclick=function(){show("t")};tE.onclick=function(){show("e")};
+function el(h){var d=document.createElement("div");d.innerHTML=h;return d}
+function home(){st=null;ex.innerHTML="";var c=el('<div class="ex-card"><p class="ex-q">Pon a prueba lo que estudiaste</p><p class="ex-exp">'+Q.length+' preguntas de selección múltiple (a a e) sobre el periodo prehispánico, la conquista, Toledo y las fundaciones, hasta 1809. Al responder verás la explicación.</p><button class="big" id="b1">Examen completo ('+Q.length+')</button><button class="big alt" id="b2">Práctica rápida (10)</button></div>');
+ex.appendChild(c);document.getElementById("b1").onclick=function(){start(Q.length)};document.getElementById("b2").onclick=function(){start(10)}}
+function shuf(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function start(n,ids){ids=ids||shuf(Q.map(function(_,i){return i})).slice(0,n);st={ids:ids,i:0,score:0,miss:[]};ask()}
+function ask(){var id=st.ids[st.i],q=Q[id],n=st.ids.length;ex.innerHTML="";
+var c=el('<div class="ex-card"><div class="ex-prog"><span>Pregunta '+(st.i+1)+' de '+n+'</span><span>Aciertos: '+st.score+'</span></div><div class="ex-bar"><i style="width:'+(st.i/n*100)+'%"></i></div><p class="ex-q"></p><div id="ops"></div><p class="ex-exp hide" id="exp"></p><button class="big hide" id="nx"></button></div>');
+c.querySelector(".ex-q").textContent=q[0];var ops=c.querySelector("#ops");
+q[1].forEach(function(t,k){var b=document.createElement("button");b.className="opt";b.textContent=L[k]+") "+t;b.onclick=function(){pick(k)};ops.appendChild(b)});
+ex.appendChild(c);window.scrollTo(0,0)}
+function pick(k){var id=st.ids[st.i],q=Q[id],bs=ex.querySelectorAll(".opt");
+[].forEach.call(bs,function(b,j){b.disabled=true;if(j===q[2])b.classList.add("ok");else if(j===k)b.classList.add("bad")});
+var ok=k===q[2];if(ok)st.score++;else st.miss.push(id);
+var e=document.getElementById("exp");e.textContent=(ok?"¡Correcto! ":"Incorrecto. La respuesta es "+L[q[2]]+"). ")+q[3];e.classList.remove("hide");
+var nx=document.getElementById("nx");nx.textContent=st.i+1<st.ids.length?"Siguiente":"Ver resultado";nx.classList.remove("hide");
+nx.onclick=function(){st.i++;st.i<st.ids.length?ask():end()}}
+function end(){var n=st.ids.length,pc=Math.round(st.score/n*100),m=pc>=80?"¡Excelente dominio del tema!":pc>=60?"Buen avance, repasa los errores.":"Conviene repasar la línea del tiempo y volver a intentar.";
+ex.innerHTML="";var c=el('<div class="ex-card"><p class="ex-exp">Resultado</p><div class="score">'+st.score+' / '+n+' ('+pc+'%)</div><p class="ex-exp">'+m+'</p><div id="ms"></div><button class="big" id="r1">Repetir examen</button><button class="big alt" id="r2">Menú</button></div>');
+var ms=c.querySelector("#ms");
+if(st.miss.length){var h=document.createElement("p");h.className="ex-exp";h.textContent="Preguntas falladas:";ms.appendChild(h);
+st.miss.forEach(function(id){var q=Q[id],d=document.createElement("div");d.className="miss";var b=document.createElement("b");b.textContent=q[0];d.appendChild(b);d.appendChild(document.createTextNode("Respuesta: "+L[q[2]]+") "+q[1][q[2]]));ms.appendChild(d)});
+var rb=document.createElement("button");rb.className="big alt";rb.id="r3";rb.textContent="Repasar solo las falladas";c.appendChild(rb)}
+ex.appendChild(c);
+document.getElementById("r1").onclick=function(){start(n)};document.getElementById("r2").onclick=home;
+var r3=document.getElementById("r3");if(r3){var ms2=st.miss.slice();r3.onclick=function(){start(ms2.length,shuf(ms2))}}
+window.scrollTo(0,0)}
 </script>
 </body>
 </html>
